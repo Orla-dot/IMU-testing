@@ -71,7 +71,7 @@ class IMU
         ACCEL_FS_SEL accelFsConfig;
         GYRO_FS_SEL  gyroFsConfig ;
 
-
+        MPU_SELECT mpuSelected;
 
 
         // divices address
@@ -86,7 +86,7 @@ class IMU
         #define ACCEL_CFG  0x1B
         #define GYRO_CFG   0x1C
         #define MAG_CFG    0x0A
-        // 
+        // magnetometer configurations address
         #define AK8963_CNTL1  0x0A
         #define AK8963_XOUT_L 0x03
         #define INT_PIN_CFG   0x37
@@ -103,7 +103,6 @@ class IMU
         void setLowPassFilter(DLPF_CONFIG_RATE rateDLPF, ACCEL_LPF_SEL rateAccel, GYRO_LPF_SEL rateGyro, MAG_LPF_SEL rateMag);
 
         void update();
-
         void updateAccel();
         void updateGyro();
         void updateMag();
