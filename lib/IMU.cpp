@@ -12,19 +12,18 @@ IMU::IMU(MPU_SELECT mpuSelect)
     if(mpuSelected == MPU_9250)
     {
         // initializing Magnetometer
-        byteWrite(MPU_ADDR, INT_PIN_CFG, 0x02); // bypass mode for magnetometer
+        byteWrite(MPU_ADDR   , INT_PIN_CFG , 0x02); // bypass mode for magnetometer
         byteWrite(AK8963_ADDR, AK8963_CNTL1, 0x00); // Power down to config the magnetometer
         byteWrite(AK8963_ADDR, AK8963_CNTL1, 0x0F); // Fuse ROM access mode
         byteWrite(AK8963_ADDR, AK8963_CNTL1, 0x16); // 16-bit output
     }
 }
 
-void IMU::setLowPassFilter(DLPF_CONFIG_RATE rateDLPF, ACCEL_LPF_SEL rateAccel, GYRO_LPF_SEL rateGyro, MAG_LPF_SEL rateMag)
+void IMU::setLowPassFilter(ACCEL_DLPF_SEL rateAccel, GYRO_DLPF_SEL rateGyro, MAG_LPF_SEL rateMag)
 {
     // Configuring data rate
-    byteWrite(MPU_ADDR, DLPF_CFG , rateDLPF ); // configurating the DLPF
-    byteWrite(MPU_ADDR, ACCEL_CFG, rateAccel); // configurating the Accel
-    byteWrite(MPU_ADDR, GYRO_CFG , rateGyro ); // configurating the Gyro
+    byteWrite(MPU_ADDR, CONFIG        , rateGyro ); // configurating the Gyro
+    byteWrite(MPU_ADDR, ACCEL_CONFIG2 , rateAccel); // configurating the Accel
 
     if(mpuSelected == MPU_9250)
     byteWrite(AK8963_ADDR, AK8963_CNTL1, rateMag); // configurating the Mag

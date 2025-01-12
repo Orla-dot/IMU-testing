@@ -19,7 +19,7 @@ enum ACCEL_FS_SEL {
     ACCEL_A8G  = 0x02,
     ACCEL_A16G = 0x03,
 };
-enum ACCEL_LPF_SEL {
+enum ACCEL_DLPF_SEL {
     ACCEL_460HZ = 0x00,
     ACCEL_44HZ  = 0x03,
     ACCEL_5HZ   = 0x06,
@@ -31,7 +31,7 @@ enum GYRO_FS_SEL {
     GYRO_G1000DPS = 0x02,
     GYRO_G2000DPS = 0x03,
 };
-enum GYRO_LPF_SEL {
+enum GYRO_DLPF_SEL {
     ACCEL_250HZ = 0x00,
     ACCEL_44HZ  = 0x03,
     ACCEL_5HZ   = 0x06,
@@ -42,19 +42,9 @@ enum MAG_LPF_SEL {
     MAG_LOW_SM_14BITS    = 0x01,
     MAG_LOW_8HZ_14BITS   = 0x02,
     MAG_LOW_100HZ_14BITS = 0x06,
-    MAG_HIGH_SM_16BITS   = 0x10,
-    MAG_HIGH_8HZ_16BITS  = 0x12,
-    MAG_HIGH_100HZ_16BITS= 0x16,
-};
-// digital low pass filter
-enum DLPF_CONFIG_RATE {
-    DLPF_260HZ = 0x00,
-    DLPF_184HZ = 0x01,
-    DLPF_94HZ  = 0x02,
-    DLPF_44HZ  = 0x03,
-    DLPF_21HZ  = 0x04,
-    DLPF_10HZ  = 0x05,
-    DLPF_5HZ   = 0x06,
+    MAG_HIGH_SM_16BITS   = 0x04,
+    MAG_HIGH_8HZ_16BITS  = 0x08,
+    MAG_HIGH_100HZ_16BITS= 0x0F,
 };
 
 
@@ -77,15 +67,21 @@ class IMU
         // divices address
         #define MPU_ADDR      0x68
         #define AK8963_ADDR   0x0C
+
         // data address
         #define ACCEL_ADDR    0x3B
         #define GYRO_ADDR     0x43
         #define MAG_ADDR      0x03
+
         // configurations address
-        #define DLPF_CFG   0x1A
-        #define ACCEL_CFG  0x1B
-        #define GYRO_CFG   0x1C
-        #define MAG_CFG    0x0A
+        //      Full-Scale Range
+        #define ACCEL_CONFIG  0x1C // Accel
+        #define GYRO_CONFIG   0x1B // Gyro
+        //      Digital Low-Pass Filter
+        #define CONFIG        0x1A // Gyro
+        #define ACCEL_CONFIG2 0x1D // Accel
+        #define MAG_CONFIG    0x0A // Mag
+
         // magnetometer configurations address
         #define AK8963_CNTL1  0x0A
         #define AK8963_XOUT_L 0x03
@@ -100,7 +96,7 @@ class IMU
     public:
         IMU(MPU_SELECT mpuSelect);
         
-        void setLowPassFilter(DLPF_CONFIG_RATE rateDLPF, ACCEL_LPF_SEL rateAccel, GYRO_LPF_SEL rateGyro, MAG_LPF_SEL rateMag);
+        void setLowPassFilter(ACCEL_DLPF_SEL rateAccel, GYRO_DLPF_SEL rateGyro, MAG_LPF_SEL rateMag);
 
         void update();
         void updateAccel();
